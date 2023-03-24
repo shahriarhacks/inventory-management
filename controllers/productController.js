@@ -1,8 +1,8 @@
-const Product = require("../models/ProductModels");
 const {
   getProductServices,
   getAProductService,
   saveProductServices,
+  updateAProductService,
 } = require("../services/productServices");
 
 exports.getAllProducts = async (req, res, next) => {
@@ -62,7 +62,7 @@ exports.getASingleProduct = async (req, res, next) => {
     });
   }
 };
-exports.SaveAProduct = async (req, res, next) => {
+exports.saveAProduct = async (req, res, next) => {
   try {
     const pd = req.body;
     // if (pd.quantity == 0) {
@@ -82,6 +82,27 @@ exports.SaveAProduct = async (req, res, next) => {
       status: "fail",
       isDone: false,
       message: "There was an error to create a Product",
+      error: error.message,
+    });
+  }
+};
+
+exports.updateAProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    const result = await updateAProductService(id, data);
+    res.status(201).json({
+      status: "success",
+      isDone: true,
+      message: "Product created successful",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      isDone: false,
+      message: "There was an error to update a Product",
       error: error.message,
     });
   }
