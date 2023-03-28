@@ -1,11 +1,12 @@
 const {
   getProductServices,
-  getAProductService,
   saveProductServices,
-  updateAProductService,
+  updateProductServiceById,
+  getProductServiceById,
+  bulkUpdateProductService,
 } = require("../services/productServices");
 
-exports.getAllProducts = async (req, res, next) => {
+exports.getAllProduct = async (req, res, next) => {
   try {
     // const { id } = req.params;
     // const filter = { $or: [{ unit: "pcs" }, { status: "out-of-stock" }] };
@@ -43,10 +44,10 @@ exports.getAllProducts = async (req, res, next) => {
   }
 };
 
-exports.getASingleProduct = async (req, res, next) => {
+exports.getProductById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const product = await getAProductService(id);
+    const product = await getProductServiceById(id);
     res.status(200).json({
       status: "success",
       isDone: true,
@@ -87,11 +88,11 @@ exports.saveAProduct = async (req, res, next) => {
   }
 };
 
-exports.updateAProduct = async (req, res, next) => {
+exports.updateProductById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const data = req.body;
-    const result = await updateAProductService(id, data);
+    const result = await updateProductServiceById(id, data);
     res.status(201).json({
       status: "success",
       isDone: true,
@@ -103,6 +104,26 @@ exports.updateAProduct = async (req, res, next) => {
       status: "fail",
       isDone: false,
       message: "There was an error to update a Product",
+      error: error.message,
+    });
+  }
+};
+
+exports.bulkUpdateProduct = async (req, res, next) => {
+  try {
+    const data = req.body;
+    const result = await bulkUpdateProductService(data);
+    res.status(201).json({
+      status: "success",
+      isDone: true,
+      message: "Product created successful",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      isDone: false,
+      message: "There was an error to update the given Products",
       error: error.message,
     });
   }

@@ -2,21 +2,20 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../../controllers/productController");
 
-// router.post("/", productController.saveAProduct);
+//Route
 
-// router.get("/", productController.getAllProducts);
+router.route("/bulk-update").patch(productController.bulkUpdateProduct);
 
+//Root Route
 router
   .route("/")
-  .get(productController.getAllProducts)
+  .get(productController.getAllProduct)
   .post(productController.saveAProduct);
 
-// router.get("/:id", productController.getASingleProduct);
-
-// router.patch(":/id", productController.updateAProduct);
+//Dynamic Route
 router
   .route("/:id")
-  .get(productController.getASingleProduct)
-  .patch(productController.updateAProduct);
+  .get(productController.getProductById)
+  .patch(productController.updateProductById);
 
 module.exports = router;

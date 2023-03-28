@@ -5,7 +5,7 @@ exports.getProductServices = async () => {
   return result;
 };
 
-exports.getAProductService = async (id) => {
+exports.getProductServiceById = async (id) => {
   const result = await Product.findById(id);
   return result;
 };
@@ -15,12 +15,27 @@ exports.saveProductServices = async (data) => {
   return result;
 };
 
-exports.updateAProductService = async (productId, data) => {
+exports.updateProductServiceById = async (productId, data) => {
   const result = await Product.updateOne(
     { _id: productId },
     { $set: data },
     { runValidators: true }
   );
 
+  return result;
+};
+
+exports.bulkUpdateProductService = async (data) => {
+  // const result = await Product.updateMany({ _id: data.ids }, data, {
+  //   runValidators: true,
+  // });
+  const products = [];
+  data.ids.forEach((product) => {
+    const pd = Product.updateOne({ _id: product.id }, product.data, {
+      runValidators: true,
+    });
+    products.push(pd);
+  });
+  const result = await Promise.all(products);
   return result;
 };
